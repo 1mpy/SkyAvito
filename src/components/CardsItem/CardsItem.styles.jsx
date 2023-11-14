@@ -74,6 +74,9 @@ export const Card__title = styled.h3`
   margin-top: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+  &:hover {
+    color: #0080c1;
+  }
   @media screen and (max-width: 620px) {
     height: 51px;
     font-size: 14px;

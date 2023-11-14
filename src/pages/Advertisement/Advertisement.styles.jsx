@@ -1,6 +1,9 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-
-export const Photo = styled.img``;
+export const Main__photo = styled.img``;
+export const Photo = styled.img`
+  border-radius: 50%;
+`;
 
 export const Main = styled.main`
   margin: 0 auto;
@@ -56,6 +59,9 @@ export const Menu__btn = styled.button`
   font-size: 16px;
   line-height: 1;
   color: #ffffff;
+  &:hover {
+    background: #0080c1;
+  }
 `;
 
 export const Main__article = styled.div`
@@ -328,6 +334,9 @@ export const Article__link = styled.p`
   font-size: 16px;
   line-height: 21px;
   color: #009ee4;
+  &:hover {
+    color: #0080c1;
+  }
   @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 19px;
@@ -358,11 +367,10 @@ export const Article__btn = styled.button`
   line-height: 22px;
   color: #ffffff;
   font-family: "Roboto", sans-serif;
-  span {
-    display: block;
-    font-size: 14px;
-    font-weight: 400;
+  &:hover {
+    background: #0080c1;
   }
+
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 57px;
@@ -374,6 +382,13 @@ export const Article__btn = styled.button`
     }
   }
 `;
+
+export const Article__btn_span = styled.span`
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 export const Article__author = styled.div`
   margin-top: 34px;
   margin-bottom: 20px;
@@ -408,12 +423,15 @@ export const Author__img = styled.div`
 export const Author__cont = styled.div`
   margin-left: 12px;
 `;
-export const Author__name = styled.p`
+export const Author__name = styled(NavLink)`
   cursor: pointer;
   font-size: 20px;
   line-height: 26px;
   font-weight: 600;
   color: #009ee4;
+  &:hover {
+    color: #0080c1;
+  }
   @media screen and (max-width: 768px) {
     font-size: 18px;
     line-height: 23px;

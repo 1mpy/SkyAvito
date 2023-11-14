@@ -6,7 +6,7 @@ function CardsItem({ element }) {
   return (
     <S.CardsItemBox>
       <S.Cards__item
-        to={`/adv/${element.id}`}
+        to={`/adv/${element?.id}`}
         style={{ textDecoration: "none" }}
       >
         <S.Cards__card>

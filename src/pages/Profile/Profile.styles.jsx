@@ -228,7 +228,7 @@ export const Settings__img = styled.div`
   background-color: #f0f0f0;
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     -o-object-fit: cover;
     object-fit: cover;
@@ -239,8 +239,10 @@ export const Settings__img = styled.div`
   }
 `;
 export const Link = styled.a``;
-export const Photo = styled.img``;
-export const Settings__change_photo = styled.a`
+export const Photo = styled.img`
+  border-radius: 50%;
+`;
+export const Settings__change_photo = styled.label`
   margin-top: 10px;
   margin-bottom: 30px;
   text-decoration: none;
@@ -248,6 +250,11 @@ export const Settings__change_photo = styled.a`
   line-height: 24px;
   color: #009ee4;
 `;
+
+export const inputChange = styled.input`
+  display: none;
+`;
+
 export const Settings__right = styled.div`
   width: 630px;
   -webkit-box-sizing: border-box;
@@ -325,9 +332,20 @@ export const Settings__btn = styled.button`
   width: 154px;
   height: 50px;
   margin: 10px 7px 0;
-  background-color: #009ee4;
   border-radius: 6px;
-  border: 1px solid #009ee4;
+  background: #009ee4;
+  border: 1px solid #d9d9d9;
+  &:active {
+    background: #009ee4;
+  }
+  &:enabled {
+    :hover {
+      background: #0080c1;
+    }
+  }
+  &:disabled {
+    background-color: #d9d9d9;
+  }
   @media screen and (max-width: 620px) {
     font-size: 16px;
     line-height: 1;

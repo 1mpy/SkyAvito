@@ -129,19 +129,20 @@ export const Modal__btn_close = styled.div`
   right: 50px;
   z-index: 3;
   cursor: pointer;
+  &:hover {
+    color: #0080c1;
+  }
 `;
 
 export const Modal__btn_close_line = styled.div`
-  &::after {
-    content: "";
-    position: absolute;
-    width: 30px;
-    height: 2px;
-    border-radius: 2px;
-    background-color: #d9d9d9;
-    top: 47%;
-    right: -4px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  &:hover::after,
+  &:hover::before {
+    background-color: #0080c1;
   }
+  &::after,
   &::before {
     content: "";
     position: absolute;
@@ -381,6 +382,9 @@ export const Button_text = styled.div`
   flex-direction: row;
   padding: 10px;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
 `;
 
 export const Form__newArt__btn_pub = styled.button`
@@ -393,12 +397,16 @@ export const Form__newArt__btn_pub = styled.button`
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
-  :hover {
-    background-color: #0080c1;
-  }
+
   &:active {
-    background-color: #0080c1;
+    background: #009ee4;
   }
+  &:enabled {
+    :hover {
+      background: #0080c1;
+    }
+  }
+
   &:disabled {
     background-color: #d9d9d9;
   }

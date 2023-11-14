@@ -5,20 +5,20 @@ import Adv from "../../../pages/Advertisement/Advertisement";
 import Auth from "../../../pages/Auth/Auth";
 import Reg from "../../../pages/Auth/Reg";
 import NewAdv from "../../modal/NewAdv/NewAdv";
-import Reviews from "../../modal/Reviews/Reviews";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Seller from "../../Seller-profile/Seller";
 
 function AppRoutes() {
-  const isAuth = localStorage.getItem("access_token");
+  const isAuth = () => localStorage.getItem("access_token");
 
   return (
     <Routes>
-      <Route element={<ProtectedRoute isAllowed={Boolean(isAuth)} />}>
+      <Route element={<ProtectedRoute isAllowed={isAuth} />}>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/adv/:id" element={<Adv />} />
         <Route path="/newadv" element={<NewAdv />} />
-        <Route path="/reviews" element={<Reviews />} />
       </Route>
+      <Route path="/seller/:id" element={<Seller />} />
+      <Route path="/adv/:id" element={<Adv />} />
       <Route path="/" element={<Main />} />
       <Route path="/login" element={<Auth />} />
       <Route path="/reg" element={<Reg />} />

@@ -195,6 +195,9 @@ export const Search__btn = styled.button`
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
+  &:hover {
+    background: #0080c1;
+  }
   @media screen and (max-width: 590px) {
     display: none;
   }

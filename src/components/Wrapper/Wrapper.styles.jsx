@@ -15,7 +15,6 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  max-width: 1440px;
   width: 100%;
   margin: 0 auto;
   background-color: #ffffff;
@@ -104,10 +103,16 @@ export const Header__btn_putAd = styled(HeaderButton)`
   cursor: pointer;
   width: 232px;
   height: 40px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
 `;
 export const Header__btn_lk = styled(HeaderButton)`
   cursor: pointer;
   width: 173px;
   height: 40px;
   margin-left: 10px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
 `;

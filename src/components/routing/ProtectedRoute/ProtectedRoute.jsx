@@ -1,12 +1,16 @@
-import { Navigate, Outlet } from 'react-router-dom'
-import { Wrapper } from '../../Wrapper/Wrapper'
+import { Navigate, Outlet } from "react-router-dom";
+import { Wrapper } from "../../Wrapper/Wrapper";
 
-function ProtectedRoute({ redirectPath = '/login', isAllowed }) {
-  if (!isAllowed) {
-    return <Navigate to={redirectPath} replace={Boolean} />
+function ProtectedRoute({ redirectPath = "/login", isAllowed }) {
+  if (!isAllowed()) {
+    return <Navigate to={redirectPath} replace={Boolean} />;
   }
 
-  return <Wrapper> <Outlet/> </Wrapper>
+  return (
+    <Wrapper>
+      <Outlet />
+    </Wrapper>
+  );
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;

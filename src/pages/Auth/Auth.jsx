@@ -4,8 +4,15 @@ import * as S from "./Auth.styles";
 import { Footer } from "../../components/FooterMobile/FooterMobile.styles";
 import { useMemo, useState } from "react";
 import { login } from "../../api/apiAuth";
+import { getUser } from "../../api/apiAds";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slices/userSlice";
 
 function Auth() {
+  const dispatch = useDispatch();
+
+  const setCurrentUser = (value) => dispatch(setUser(value));
+  
   const navigate = useNavigate();
   const [logindata, setLogindata] = useState({
     password: "",
@@ -26,7 +33,14 @@ function Auth() {
     login({
       email: logindata.email,
       password: logindata.password,
-    }).then(() => navigate(`/`));
+    })
+      .then(() => {    
+        getUser().then((data) => {
+        if (data) {
+          setCurrentUser(data)
+        }
+        })})
+      .then(() => navigate(`/`));
   };
   return (
     <S.Wrapper>

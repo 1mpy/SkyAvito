@@ -11,6 +11,8 @@ import img from "../../assets/images/no_img.png";
 import { setAdsComments } from "../../store/slices/adsSlice";
 import { getAdComments } from "../../api/apiAds";
 import Reviews from "../../components/modal/Reviews/Reviews";
+import { Wrapper } from "../../components/Wrapper/Wrapper";
+import { selectorUser } from "../../store/selectors/userSelector";
 
 function Adv() {
   const params = useParams();
@@ -31,6 +33,7 @@ function Adv() {
   // КОММЕНТАРИИ
   const dispatch = useDispatch();
   const adsComments = useSelector(selectorAdsComments);
+  const user = useSelector(selectorUser);
   const setComments = (value) => dispatch(setAdsComments(value || []));
   const updateComments = () => {
     getAdComments(params, currentAd.id).then((comments) => {
@@ -41,15 +44,22 @@ function Adv() {
   useEffect(() => {
     updateComments();
   }, []);
-  console.log("currentAd", currentAd);
+  console.log("user", user);
 
   //МОДАЛКА
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal((prev) => !prev);
 
+  // Скрыть/показать телефон
+  const [showPhone, setShowPhone] = useState(false);
+  const handleShowPhone = () => {
+    setShowPhone(true);
+  };
+
   return (
     <>
       <S.Main>
+        <Wrapper />
         <S.Main__container>
           <S.Main__menu>
             <S.Menu__logo_link>
@@ -61,13 +71,12 @@ function Adv() {
               </Link>
             </S.Menu__form>
           </S.Main__menu>
-
           <S.Main__article>
             <S.Article__content>
               <S.Article__left>
                 <S.Article__fill_img>
                   <S.Article__img>
-                    <S.Photo src={mainImageUrl} />
+                    <S.Main__photo src={mainImageUrl} />
                   </S.Article__img>
                   {currentAd?.images.length > 0 && (
                     <S.Article__img_bar>
@@ -98,16 +107,43 @@ function Adv() {
                     </S.Article__link>
                   </S.Article__info>
                   <S.Article__price>{currentAd?.price}₽</S.Article__price>
-                  <S.Article__btn>
-                    Показать&nbsp;телефон
-                    <span>{currentAd?.phone}</span>
+                  <S.Article__btn onClick={handleShowPhone}>
+                    {currentAd?.user?.phone === null ? (
+                      <S.Article__btn_span>
+                        Телефон не указан
+                      </S.Article__btn_span>
+                    ) : (
+                      <S.Article__btn_span>
+                        Показать&nbsp;телефон
+                        <br />
+                        {!showPhone
+                          ? `${currentAd?.user?.phone.substring(
+                              0,
+                              1
+                            )}${currentAd?.user?.phone.substring(
+                              1,
+                              4
+                            )} XXX XX XX`
+                          : currentAd?.user?.phone}
+                      </S.Article__btn_span>
+                    )}
                   </S.Article__btn>
                   <S.Article__author>
                     <S.Author__img>
-                      <S.Photo />
+                      <S.Photo
+                        src={`http://127.0.0.1:8090/${currentAd?.user?.avatar}`}
+                      ></S.Photo>
                     </S.Author__img>
                     <S.Author__cont>
-                      <S.Author__name>{currentAd?.user?.name}</S.Author__name>
+                      <S.Author__name
+                        to={
+                          currentAd.user.id === user.id
+                            ? `/profile`
+                            : `/seller/${currentAd.user.id}`
+                        }
+                      >
+                        {currentAd?.user?.name}
+                      </S.Author__name>
                       <S.Author__about>
                         Продает с {currentAd?.user?.sells_from}
                       </S.Author__about>

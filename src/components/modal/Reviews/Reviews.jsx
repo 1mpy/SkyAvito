@@ -41,44 +41,52 @@ function Reviews({ modal, handleModal, currentAd, updateComments }) {
         setRequestProcess({ loading: false, error: false });
         setReviewData((prev) => ({ ...prev, text: "" }));
         updateComments();
-        // handleModal();
       })
 
       .catch((error) => {
         setRequestProcess({ loading: false, error: error.message });
       });
   };
+  // Отключение комментариев незарегистрированным пользователям
+  const user = localStorage.getItem("access_token");
+
+
+
   return (
     <S.Wrapper style={{ visibility: modal ? "visible" : "hidden" }}>
-      {/* <S.Container__bg> */}
-      <S.Backdrop onClick={handleModal}/>
+      <S.Backdrop onClick={handleModal} />
       <S.Modal__block>
         <S.Modal__content>
           <S.Modal__title>Отзывы о товаре</S.Modal__title>
           <S.Modal__btn_close onClick={handleModal}>
-            <S.Modal__btn_close_line>
-              <S.Modal__btn_close_line></S.Modal__btn_close_line>
-            </S.Modal__btn_close_line>
+            <S.Modal__btn_close_line></S.Modal__btn_close_line>
           </S.Modal__btn_close>
           <S.Modal__scroll>
-            <S.Modal__form_newArt onSubmit={(e) => e.preventDefault()}>
-              <S.Form__newArt_block>
-                <label for="text">Добавить отзыв</label>
-                <S.Form__newArt_area
-                  placeholder="Введите описание"
-                  value={reviewData.text}
-                  onInput={handleText}
-                ></S.Form__newArt_area>
-              </S.Form__newArt_block>
-              <S.Form__newArt__btn_pub
-                onClick={makeNewComment}
-                disabled={buttonDisabled || requestProcess.loading}
-              >
-                <S.Button_text>
-                  {requestProcess.loading ? <S.Loading /> : "Опубликовать"}
-                </S.Button_text>
-              </S.Form__newArt__btn_pub>
-            </S.Modal__form_newArt>
+            {user ? (
+              <>
+                <S.Modal__form_newArt onSubmit={(e) => e.preventDefault()}>
+                  <S.Form__newArt_block>
+                    <label for="text">Добавить отзыв</label>
+                    <S.Form__newArt_area
+                      placeholder="Введите описание"
+                      value={reviewData.text}
+                      onInput={handleText}
+                    ></S.Form__newArt_area>
+                  </S.Form__newArt_block>
+                  <S.Form__newArt__btn_pub
+                    onClick={makeNewComment}
+                    disabled={buttonDisabled || requestProcess.loading}
+                  >
+                    <S.Button_text>
+                      {requestProcess.loading ? <S.Loading /> : "Опубликовать"}
+                    </S.Button_text>
+                  </S.Form__newArt__btn_pub>
+                </S.Modal__form_newArt>
+              </>
+            ) : (
+              <></>
+            )}
+
             <S.Modal__reviews>
               <S.Reviews__review>
                 {adReviews?.map((el) => (
