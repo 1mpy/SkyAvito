@@ -1,6 +1,7 @@
 import React from "react";
 import * as S from "./CardsItem.styles";
 import img from "../../assets/images/no_img.png";
+import ChangeTime from "../timeChanger/ChangeTime";
 
 function CardsItem({ element }) {
   return (
@@ -25,9 +26,11 @@ function CardsItem({ element }) {
             <S.Link>
               <S.Card__title>{element?.title}</S.Card__title>
             </S.Link>
-            <S.Card__price>{element?.price}</S.Card__price>
+            <S.Card__price>{element?.price} ₽</S.Card__price>
             <S.Card__place>{element?.user?.city}</S.Card__place>
-            <S.Card__date>{element?.created_on}</S.Card__date>
+            <S.Card__date>
+              <ChangeTime date={element?.created_on} />
+            </S.Card__date>
           </S.Card__content>
         </S.Cards__card>
       </S.Cards__item>

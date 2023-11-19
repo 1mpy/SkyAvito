@@ -93,7 +93,7 @@ export const Modal__content = styled.div`
   }
 `;
 export const Modal__title = styled.h3`
-  :hover::before {
+  &:hover::before {
     border-top: 2px solid #0080c1;
     border-left: 2px solid #0080c1;
   }
@@ -193,28 +193,28 @@ export const Form__newArt_input = styled.input`
   width: 100%;
   font-size: 16px;
   line-height: 24px;
-  ::-webkit-input-placeholder {
+  &::-webkit-input-placeholder {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     color: #0000004d;
   }
-  :-ms-input-placeholder {
+  &:-ms-input-placeholder {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     color: #0000004d;
   }
-  ::-ms-input-placeholder {
+  &::-ms-input-placeholder {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     color: #0000004d;
   }
-  ::placeholder {
+  &::placeholder {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -223,22 +223,22 @@ export const Form__newArt_input = styled.input`
   }
   @media screen and (max-width: 600px) {
     width: 100%;
-    ::-webkit-input-placeholder {
+    &::-webkit-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    :-ms-input-placeholder {
+    &:-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    ::-ms-input-placeholder {
+    &::-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    ::placeholder {
+    &::placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
@@ -252,7 +252,7 @@ export const Form__newArt_area = styled.textarea`
   max-height: 200px;
   font-size: 16px;
   line-height: 24px;
-  ::-webkit-input-placeholder {
+  &::-webkit-input-placeholder {
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -260,7 +260,7 @@ export const Form__newArt_area = styled.textarea`
     line-height: 24px;
     color: #0000004d;
   }
-  :-ms-input-placeholder {
+  &:-ms-input-placeholder {
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -268,7 +268,7 @@ export const Form__newArt_area = styled.textarea`
     line-height: 24px;
     color: #0000004d;
   }
-  ::-ms-input-placeholder {
+  &::-ms-input-placeholder {
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -276,7 +276,7 @@ export const Form__newArt_area = styled.textarea`
     line-height: 24px;
     color: #0000004d;
   }
-  ::placeholder {
+  &::placeholder {
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -288,22 +288,22 @@ export const Form__newArt_area = styled.textarea`
     font-family: "Roboto", sans-serif;
     width: 100%;
     max-height: 107px;
-    ::-webkit-input-placeholder {
+    &::-webkit-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    :-ms-input-placeholder {
+    &:-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    ::-ms-input-placeholder {
+    &::-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
     }
-    ::placeholder {
+    &::placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #c4c4c4;
@@ -367,7 +367,7 @@ export const Form__newArt_bar_img = styled.div`
     overflow: hidden;
   }
 `;
-export const Form__newArt_img = styled.div`
+export const Form__newArt_img = styled.label`
   width: 90px;
   height: 90px;
   margin-right: 10px;
@@ -376,7 +376,7 @@ export const Form__newArt_img = styled.div`
   img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     -o-object-fit: cover;
     object-fit: cover;
     z-index: 2;
@@ -399,6 +399,7 @@ export const Form__newArt_img = styled.div`
   }
 `;
 export const Form__newArt_img_cover = styled.div`
+  cursor: pointer;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -406,8 +407,8 @@ export const Form__newArt_img_cover = styled.div`
   left: 0;
   background-color: #f0f0f0;
   z-index: -1;
-  ::after,
-  ::before {
+  &::after,
+  &::before {
     content: "";
     position: absolute;
     width: 30px;
@@ -417,10 +418,18 @@ export const Form__newArt_img_cover = styled.div`
     top: 50%;
     right: calc(50% - (30px / 2));
   }
-  ::before {
+  &::before {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
   }
+  &:hover::after,
+  &:hover::before {
+    background-color: #0080c1;
+  }
+`;
+
+export const inputChange = styled.input`
+  display: none;
 `;
 export const Form__newArt_input_price = styled.input`
   ${formStyle}
@@ -428,7 +437,7 @@ export const Form__newArt_input_price = styled.input`
   font-size: 16px;
   line-height: 24px;
   color: #000000;
-  ::-webkit-input-placeholder {
+  &::-webkit-input-placeholder {
     text-align: end;
     font-style: normal;
     font-weight: 400;
@@ -436,7 +445,7 @@ export const Form__newArt_input_price = styled.input`
     line-height: 24px;
     color: #000000;
   }
-  :-ms-input-placeholder {
+  &:-ms-input-placeholder {
     text-align: end;
     font-style: normal;
     font-weight: 400;
@@ -444,7 +453,7 @@ export const Form__newArt_input_price = styled.input`
     line-height: 24px;
     color: #000000;
   }
-  ::-ms-input-placeholder {
+  &::-ms-input-placeholder {
     text-align: end;
     font-style: normal;
     font-weight: 400;
@@ -452,7 +461,7 @@ export const Form__newArt_input_price = styled.input`
     line-height: 24px;
     color: #000000;
   }
-  ::placeholder {
+  &::placeholder {
     text-align: end;
     font-style: normal;
     font-weight: 400;
@@ -462,22 +471,22 @@ export const Form__newArt_input_price = styled.input`
   }
   @media screen and (max-width: 600px) {
     width: 100%;
-    ::-webkit-input-placeholder {
+    &::-webkit-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #000000;
     }
-    :-ms-input-placeholder {
+    &:-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #000000;
     }
-    ::-ms-input-placeholder {
+    &::-ms-input-placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #000000;
     }
-    ::placeholder {
+    &::placeholder {
       font-size: 14px;
       line-height: 21px;
       color: #000000;
@@ -495,7 +504,7 @@ export const Form__newArt_input_price_cover = styled.div`
   left: 170px;
   z-index: 0;
   background-color: #ffffff;
-  ::after {
+  &::after {
   content: "\A0 \20BD";
   width: 24px;
   height: 24px;

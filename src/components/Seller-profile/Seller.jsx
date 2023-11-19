@@ -17,7 +17,6 @@ function Seller() {
       navigate("/");
     }
     getUserById(params.id).then((data) => {
-      // console.log("data", data);
       if (data) {
         setUser(data);
         getAds({ user_id: data.id }).then((userAdsData) => {
@@ -28,23 +27,28 @@ function Seller() {
       }
     });
   }, []);
-console.log("user", user)
+
+  const [showPhone, setShowPhone] = useState(false);
+  const handleShowPhone = () => {
+    setShowPhone(true);
+  };
+
   return (
     <>
       <S.Main>
         <Wrapper />
         <S.Sellers__container>
           <S.Main__center_block>
-          <S.Main__menu>
-            <S.Menu__logo_link href="" target="_blank">
-              <S.Menu__logo_img src={logo} alt="logo" />
-            </S.Menu__logo_link>
-            <S.Menu__form>
-              <Link to="/">
-                <S.Menu__btn>Вернуться на&nbsp;главную</S.Menu__btn>
-              </Link>
-            </S.Menu__form>
-          </S.Main__menu>
+            <S.Main__menu>
+              <S.Menu__logo_link href="" target="_blank">
+                <S.Menu__logo_img src={logo} alt="logo" />
+              </S.Menu__logo_link>
+              <S.Menu__form>
+                <Link to="/">
+                  <S.Menu__btn>Вернуться на&nbsp;главную</S.Menu__btn>
+                </Link>
+              </S.Menu__form>
+            </S.Main__menu>
             <S.Main__header>Профиль продавца</S.Main__header>
             <S.Main__profile_sell>
               <S.Profile__sell_content>
@@ -77,9 +81,24 @@ console.log("user", user)
                         </S.Link>
                       </S.Seller__img_mob>
                     </S.Seller__img_mob_block>
-                    <S.Seller__btn>
-                      Показать&nbsp;телефон
-                      <span>8&nbsp;905&nbsp;ХХХ&nbsp;ХХ&nbsp;ХХ</span>
+
+                    <S.Seller__btn onClick={handleShowPhone}>
+                      {user?.phone === null ? (
+                        <S.Seller__btn_span>
+                          Телефон не указан
+                        </S.Seller__btn_span>
+                      ) : (
+                        <S.Seller__btn_span>
+                          Показать&nbsp;телефон
+                          <br />
+                          {!showPhone
+                            ? `${user?.phone.substring(
+                                0,
+                                1
+                              )}${user?.phone.substring(1, 4)} XXX XX XX`
+                            : user?.phone}
+                        </S.Seller__btn_span>
+                      )}
                     </S.Seller__btn>
                   </S.Seller__right>
                 </S.Profile__sell_seller>

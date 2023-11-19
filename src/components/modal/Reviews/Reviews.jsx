@@ -3,10 +3,10 @@ import * as S from "./Reviews.styles";
 import { selectorAdsComments } from "../../../store/selectors/adsSelector";
 import { useMemo, useState } from "react";
 import { newComment } from "../../../api/apiAds";
+import ChangeTime from "../../timeChanger/ChangeTime";
 
 function Reviews({ modal, handleModal, currentAd, updateComments }) {
   const adReviews = useSelector(selectorAdsComments);
-  // console.log("adReviews", adReviews);
 
   //Данные о комментарии
   const [reviewData, setReviewData] = useState({
@@ -47,10 +47,9 @@ function Reviews({ modal, handleModal, currentAd, updateComments }) {
         setRequestProcess({ loading: false, error: error.message });
       });
   };
+
   // Отключение комментариев незарегистрированным пользователям
   const user = localStorage.getItem("access_token");
-
-
 
   return (
     <S.Wrapper style={{ visibility: modal ? "visible" : "hidden" }}>
@@ -92,14 +91,14 @@ function Reviews({ modal, handleModal, currentAd, updateComments }) {
                 {adReviews?.map((el) => (
                   <S.Review__item element={el}>
                     <S.Review__left>
-                      <S.Review__img>
-                        <img src="" alt="" />
-                      </S.Review__img>
+                      <S.Review__img
+                        src={`http://127.0.0.1:8090/${el.author?.avatar}`}
+                      ></S.Review__img>
                     </S.Review__left>
                     <S.Review__right>
                       <S.Review__name>
-                        {el.author?.name}
-                        <span>{el.created_on}</span>
+                        {el.author?.name} &nbsp;
+                        <ChangeTime date={el.created_on} />
                       </S.Review__name>
                       <S.Review__title>Комментарий</S.Review__title>
                       <S.Review__text>{el.text}</S.Review__text>

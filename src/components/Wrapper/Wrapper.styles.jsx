@@ -116,3 +116,13 @@ export const Header__btn_lk = styled(HeaderButton)`
     background: rgba(255, 255, 255, 0.15);
   }
 `;
+
+export const Header__btn_logout = styled(HeaderButton)`
+  cursor: pointer;
+  width: 173px;
+  height: 40px;
+  margin-left: 10px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+`;

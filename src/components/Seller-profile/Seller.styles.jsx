@@ -159,13 +159,14 @@ export const Seller__left = styled.div`
   }
 `;
 export const Seller__img = styled.div`
+  border-radius: 50%;
   width: 170px;
   height: 170px;
   border-radius: 50%;
   background-color: #f0f0f0;
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     -o-object-fit: cover;
     object-fit: cover;
@@ -176,7 +177,9 @@ export const Seller__img = styled.div`
 `;
 
 export const Link = styled.a``;
-export const Photo = styled.img``;
+export const Photo = styled.img`
+  border-radius: 50%;
+`;
 export const Seller__right = styled.div`
   width: auto;
   @media screen and (max-width: 580px) {
@@ -261,11 +264,7 @@ export const Seller__btn = styled.button`
   line-height: 22px;
   color: #ffffff;
   font-family: "Roboto", sans-serif;
-  span {
-    display: block;
-    font-size: 14px;
-    font-weight: 400;
-  }
+
   &:hover {
     background-color: #0080c1;
   }
@@ -280,6 +279,13 @@ export const Seller__btn = styled.button`
     }
   }
 `;
+
+export const Seller__btn_span = styled.span`
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 export const Content__cards = styled.div`
   max-width: 1158px;
   width: 100%;
@@ -292,7 +298,6 @@ export const Content__cards = styled.div`
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  overflow-y: auto;
   scrollbar-color: #ffffff #2e2e2e;
   scrollbar-width: thin;
   scrollbar-width: 0px;

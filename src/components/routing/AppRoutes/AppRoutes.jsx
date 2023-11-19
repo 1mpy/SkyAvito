@@ -7,15 +7,29 @@ import Reg from "../../../pages/Auth/Reg";
 import NewAdv from "../../modal/NewAdv/NewAdv";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Seller from "../../Seller-profile/Seller";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../store/slices/userSlice";
+import { useEffect } from "react";
 
 function AppRoutes() {
-  const isAuth = () => localStorage.getItem("access_token");
+  const dispatch = useDispatch();
+
+  const setCurrentUser = (value) => dispatch(setUser(value));
+  const isAuth = () => {
+    const token = localStorage.getItem("access_token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) setCurrentUser(user);
+    return token && user;
+  };
+
+  useEffect(() => {
+    isAuth();
+  }, []);
 
   return (
     <Routes>
       <Route element={<ProtectedRoute isAllowed={isAuth} />}>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/newadv" element={<NewAdv />} />
       </Route>
       <Route path="/seller/:id" element={<Seller />} />
       <Route path="/adv/:id" element={<Adv />} />

@@ -424,7 +424,6 @@ export const Reviews__review = styled.div`
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -452,7 +451,7 @@ export const Review__left = styled.div`
   margin-right: 12px;
 `;
 
-export const Review__img = styled.div`
+export const Review__img = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;

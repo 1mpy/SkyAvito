@@ -66,7 +66,7 @@ export const SignIn__form_login = styled.form`
 export const SignIn__logo = styled.div`
   width: 140px;
   height: 21px;
-  margin-bottom: 34px;
+  margin-bottom: 42px;
   background-color: transparent;
   img {
     width: 140px;
@@ -83,6 +83,9 @@ export const SignIn__logo = styled.div`
     }
   }
 `;
+
+export const SignIn__logo_img = styled.img``;
+
 export const SignIn__Input = styled.input`
   width: 100%;
   border-top: none;
@@ -90,6 +93,7 @@ export const SignIn__Input = styled.input`
   border-right: none;
   border-bottom: 1px solid #d0cece;
   padding: 8px 1px;
+  margin-bottom: 30px;
   &::-webkit-input-placeholder {
     font-style: normal;
     font-weight: 400;
@@ -164,7 +168,7 @@ export const Btn__enter = styled.button`
   height: 52px;
   background-color: #009ee4;
   border-radius: 6px;
-  margin-top: 60px;
+  margin-top: 38px;
   margin-bottom: 20px;
   border: none;
   display: -webkit-box;

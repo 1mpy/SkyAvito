@@ -4,6 +4,7 @@ const initialState = {
   adsList: [],
   selectedAds: {},
   adsComments: [],
+  shouldUpdate: false,
 };
 
 export const adsSlice = createSlice({
@@ -19,9 +20,13 @@ export const adsSlice = createSlice({
     setAdsComments: (state, action) => {
       state.adsComments = action.payload;
     },
+    setShouldUpdate: (state, action) => {
+      state.shouldUpdate = action.payload;
+    },
   },
 });
 
-export const { setAdsList, setSelectedAds, setAdsComments } = adsSlice.actions;
+export const { setAdsList, setSelectedAds, setAdsComments, setShouldUpdate } =
+  adsSlice.actions;
 
 export default adsSlice.reducer;

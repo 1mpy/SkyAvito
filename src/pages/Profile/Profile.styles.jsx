@@ -373,11 +373,10 @@ export const Content__cards = styled.div`
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   scrollbar-color: #ffffff #2e2e2e;
   scrollbar-width: thin;
   scrollbar-width: 0px;
-  height: 441px;
   &::-webkit-scrollbar {
     width: 0px;
     background-color: #009ee4;

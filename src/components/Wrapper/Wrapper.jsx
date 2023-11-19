@@ -4,18 +4,31 @@ import { Footer } from "../../components/FooterMobile/FooterMobile.styles";
 import * as S from "./Wrapper.styles";
 import { useState } from "react";
 import NewAdv from "../modal/NewAdv/NewAdv";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../../store/slices/userSlice";
+import { selectorUser } from "../../store/selectors/userSelector";
 
 export function Wrapper({ children }) {
-  const isAuth = localStorage.getItem("access_token");
-
+  const user = useSelector(selectorUser);
+  const dispatch = useDispatch();
+  console.log("user", user);
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal((prev) => !prev);
+
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("updatedToken");
+    dispatch(removeUser());
+  };
+
   return (
     <S.Wrapper>
       <S.Container>
         <S.Header>
           <S.Header__nav>
-            {isAuth ? (
+            {user.id ? (
               <>
                 <S.Header__logo>
                   <S.Logo__mob_link>
@@ -27,6 +40,11 @@ export function Wrapper({ children }) {
                 </S.Header__btn_putAd>
                 <Link to="/profile">
                   <S.Header__btn_lk>Личный кабинет</S.Header__btn_lk>
+                </Link>
+                <Link to="/">
+                  <S.Header__btn_logout onClick={logout}>
+                    Выйти
+                  </S.Header__btn_logout>
                 </Link>
               </>
             ) : (

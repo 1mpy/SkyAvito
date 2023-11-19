@@ -1,8 +1,6 @@
-import { Link, useParams } from "react-router-dom";
 import CardsItem from "../../components/CardsItem/CardsItem";
-import { Footer } from "../../components/FooterMobile/FooterMobile.styles";
 import * as S from "./Main.styles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAds } from "../../api/apiAds";
 import logo from "../../assets/icons/logo.png";
 import { Wrapper } from "../../components/Wrapper/Wrapper";
@@ -16,12 +14,10 @@ function Main() {
   const setAds = (value) => dispatch(setAdsList(value || []));
   useEffect(() => {
     getAds().then((data) => {
-      console.log("data", data);
       setAds(data);
       setAdsFiltered(data);
     });
   }, []);
-  // console.log("ads", ads);
 
   // ПОИСК...
 
@@ -45,6 +41,13 @@ function Main() {
   };
   // ///////
 
+  const ref = useRef(null);
+
+  const onClear = () => {
+    setSearchData("");
+    setAdsFiltered(ads);
+  };
+
   return (
     <Wrapper>
       <S.Main>
@@ -57,9 +60,18 @@ function Main() {
           </S.Search__logo_mob_link>
           <S.Search__form onSubmit={(e) => e.preventDefault()}>
             <S.Search__text
+              ref={ref}
+              type="search"
               placeholder="Поиск по объявлениям"
               onInput={handleSearchData}
               value={searchData}
+              onClick={(event) => {
+                const element = ref.current;
+                element.addEventListener("search", onClear);
+                setTimeout(() =>
+                  element.removeEventListener("search", onClear)
+                );
+              }}
             ></S.Search__text>
             <S.Search__text_mob />
             <S.Search__btn onClick={searchAds}>Найти</S.Search__btn>

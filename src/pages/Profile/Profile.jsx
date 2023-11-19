@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CardsItem from "../../components/CardsItem/CardsItem";
 import * as S from "./Profile.styles";
 import { getAds, getUser, patchUser, postNewUserPhoto } from "../../api/apiAds";
@@ -8,30 +8,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectorUser } from "../../store/selectors/userSelector";
 import img from "../../assets/images/no_img.png";
 import logo from "../../assets/icons/logo.png";
+import { selectorShouldUpdate } from "../../store/selectors/adsSelector";
+import { setShouldUpdate } from "../../store/slices/adsSlice";
+import { validatePhone, validateReg } from "../../utils/validate";
 
 function Profile() {
   const [userAds, setUserAds] = useState();
+  const shouldUpdate = useSelector(selectorShouldUpdate);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectorUser);
   const setCurrentUser = (value) => dispatch(setUser(value));
-  useEffect(() => {
-    getUser().then((data) => {
-      if (data) {
-        setCurrentUser(data);
-        setUserData({
-          name: data.name,
-          surname: data.surname,
-          city: data.city,
-          phone: data.phone,
-          avatar: data.avatar,
-        });
-        getAds({ user_id: data.id }).then((userAdsData) => {
-          if (userAdsData) {
-            setUserAds(userAdsData);
-          }
-        });
+  const user = useSelector(selectorUser);
+  const updateAds = () => {
+    getAds({ user_id: user.id }).then((userAdsData) => {
+      if (userAdsData) {
+        setUserAds(userAdsData);
+        dispatch(setShouldUpdate(false));
       }
     });
+  };
+  useEffect(() => {
+    if (shouldUpdate) updateAds();
+  }, [shouldUpdate]);
+
+  useEffect(() => {
+    if (!shouldUpdate) updateAds();
   }, []);
 
   // Изменение данных...
@@ -73,11 +74,27 @@ function Profile() {
     setUserData((prev) => ({ ...prev, phone: e.target.value }));
 
   const changeUserInfo = async () => {
+    if (!validatePhone(userData.phone)) {
+      setUserData((prev) => ({ ...prev, error: "Телефон неверного формата" }));
+      return;
+    }
+    if (
+      !validateReg(userData.name) ||
+      !validateReg(userData.surname) ||
+      !validateReg(userData.city)
+    ) {
+      setUserData((prev) => ({
+        ...prev,
+        error: "Имя/Фамилия/Город должны быть с большой буквы и не содержать цифр",
+      }));
+      return;
+    }
     const updatedUserInfo = await patchUser({
       name: userData.name,
       surname: userData.surname,
       city: userData.city,
       phone: userData.phone,
+      error: false,
     });
     if (updatedUserInfo) {
       setCurrentUser(updatedUserInfo);
@@ -87,22 +104,22 @@ function Profile() {
         city: updatedUserInfo.city,
         phone: updatedUserInfo.phone,
       });
+      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
     }
   };
 
   //Аватар
 
   const handleUserPhoto = async (event) => {
-    console.log("1");
     event.preventDefault();
     const selectedFile = event.target.files[0];
     if (!selectedFile) {
-      console.log("Файл не выбран");
     } else {
       const formData = new FormData();
       formData.append("file", selectedFile);
       const userPhoto = await postNewUserPhoto(formData);
-      // localStorage.setItem("user", JSON.stringify(userPhoto));
+      setCurrentUser(userPhoto);
+      localStorage.setItem("user", JSON.stringify(userPhoto));
     }
   };
 
@@ -181,6 +198,9 @@ function Profile() {
                         value={userData.phone}
                         onInput={handlePhone}
                       />
+                      <p style={{ color: "red" }}>
+                        {userData.error ? userData.error : ""}
+                      </p>
                     </S.Settings__div>
                   </S.Settings__form>
                   <S.Settings__btn
@@ -198,7 +218,7 @@ function Profile() {
         <S.Main__content>
           <S.Content__cards>
             {!userAds
-              ? "Загрузка"
+              ? "Загрузка..."
               : userAds?.map((el) => <CardsItem element={el} />)}
           </S.Content__cards>
         </S.Main__content>

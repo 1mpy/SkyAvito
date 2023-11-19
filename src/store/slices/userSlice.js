@@ -17,7 +17,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      console.log("action.payload", action.payload);
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.email = action.payload.email;
@@ -29,7 +28,15 @@ const userSlice = createSlice({
       state.surname = action.payload.surname;
     },
     removeUser(state) {
-      state = initialState;
+      state.id = null;
+      state.name = null;
+      state.email = null;
+      state.city = null;
+      state.avatar = null;
+      state.sells_from = null;
+      state.phone = null;
+      state.role = null;
+      state.surname = null;
     },
     changeEmail(state, action) {
       state.email = action.payload.email;

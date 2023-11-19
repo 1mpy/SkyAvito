@@ -257,6 +257,10 @@ export const Article__img_bar_div = styled.div`
   background-color: #f0f0f0;
   border: 2px solid #f0f0f0;
   margin: 0 5px;
+
+  &:hover {
+    border: 2px solid #0080c1;
+  }
   img {
     cursor: pointer;
     width: 100%;
@@ -266,6 +270,8 @@ export const Article__img_bar_div = styled.div`
     object-fit: cover;
   }
 `;
+
+export const Photo__img_bar = styled.img``;
 export const Article__right = styled.div`
   max-width: 621px;
   @media screen and (max-width: 768px) {
@@ -355,6 +361,16 @@ export const Article__price = styled.p`
     margin-bottom: 20px;
   }
 `;
+
+export const Article__btn_block = styled.div`
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
 export const Article__btn = styled.button`
   cursor: pointer;
   background-color: #009ee4;

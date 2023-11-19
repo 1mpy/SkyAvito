@@ -275,7 +275,7 @@ export const Content__cards = styled.div`
   grid-gap: 40px 26px;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
+  /* justify-content: center; */
   scrollbar-color: #ffffff #2e2e2e;
   scrollbar-width: thin;
   scrollbar-width: 0px;
