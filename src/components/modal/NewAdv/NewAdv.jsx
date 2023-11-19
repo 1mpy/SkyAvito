@@ -51,12 +51,8 @@ function NewAdv({ modal, handleModal, currentAd }) {
     event.preventDefault();
     const selectedFile = event.target.files[0];
     console.log("selectedFile", selectedFile);
-    // console.log("images", images);
-
-    // console.log("event.target.id", event.target.id);
 
     if (!selectedFile) {
-      // console.log("Файл не выбран");
     } else {
       setImages((prev) => ({ ...prev, [event.target.id]: selectedFile }));
     }
