@@ -295,3 +295,26 @@ export async function patchAd(params, ad_id) {
   const data = await response.json();
   return data;
 }
+
+
+export async function delPhoto(ad_id, params) {
+  let accessToken = localStorage.getItem("access_token");
+  let url = new URL(`/ads/${ad_id}/image`, process.env.REACT_APP_API_URL); 
+  if (params?.file_url) url.searchParams.append("file_url", params.file_url);
+  if (isExpired(accessToken)) {
+    await newToken();
+    accessToken = localStorage.getItem("access_token");
+  }
+  const response = await fetch(
+    url,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Ошибка сервера");
+  }
+}

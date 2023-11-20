@@ -221,11 +221,11 @@ function Adv() {
           handleModal={handleModal}
           updateComments={updateComments}
         />
-        <NewAdv
+{changeAdModal &&        <NewAdv
           handleModal={openModal}
           modal={changeAdModal}
           currentAd={currentAd}
-        />
+        />}
         <></>
       </S.Main>
     </>

@@ -59,7 +59,7 @@ export function Wrapper({ children }) {
         {children}
         <Footer />
       </S.Container>
-      <NewAdv modal={modal} handleModal={handleModal} />
+      {modal && <NewAdv modal={modal} handleModal={handleModal} />}
     </S.Wrapper>
   );
 }

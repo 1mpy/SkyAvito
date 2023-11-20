@@ -1,15 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import * as S from "./NewAdv.styles";
-import { getAds, newAd, patchAd, postNewAdPhoto } from "../../../api/apiAds";
+import {
+  delPhoto,
+  getAds,
+  newAd,
+  patchAd,
+  postNewAdPhoto,
+} from "../../../api/apiAds";
 import { useDispatch } from "react-redux";
 import { setAdsList, setShouldUpdate } from "../../../store/slices/adsSlice";
+import { validatePrice } from "../../../utils/validate";
 
 function NewAdv({ modal, handleModal, currentAd }) {
+  const [images, setImages] = useState({});
   //Данные о объявлении
   const [newAdData, setnewAdData] = useState({
     title: currentAd ? currentAd.title : "",
     description: currentAd ? currentAd.description : "",
     price: currentAd ? currentAd.price : "",
+    error: false,
   });
 
   //Состояние на момент запроса при создании объявления
@@ -20,22 +29,39 @@ function NewAdv({ modal, handleModal, currentAd }) {
 
   //Блокирование кнопки
   const buttonDisabled = useMemo(() => {
-    if (
-      newAdData.title === "" ||
-      newAdData.description === "" ||
-      newAdData.price === ""
-    )
-      return true;
+    console.log("active");
+
     if (currentAd) {
       if (
-        newAdData.title === currentAd.title &&
-        newAdData.description === currentAd.description &&
-        newAdData.price === currentAd.price
+        newAdData.title !== currentAd.title ||
+        newAdData.description !== currentAd.description ||
+        newAdData.price !== currentAd.price
       )
-        return true;
+        return false;
+      if (
+        currentAd?.images?.length !==
+        Object.values(images).filter((el) => el !== "")
+      )
+        return false;
+      currentAd?.images?.forEach((el) => {
+        if (!Object.values(images).find((item) => item === el.url))
+          return false;
+      });
     }
-    return false;
-  }, [newAdData.title, newAdData.description, newAdData.price]);
+    if (
+      newAdData.title !== "" &&
+      newAdData.description !== "" &&
+      newAdData.price !== ""
+    )
+      return false;
+    return true;
+  }, [
+    newAdData.title,
+    newAdData.description,
+    newAdData.price,
+    currentAd,
+    images,
+  ]);
 
   const handleTitle = (e) =>
     setnewAdData((prev) => ({ ...prev, title: e.target.value }));
@@ -46,7 +72,6 @@ function NewAdv({ modal, handleModal, currentAd }) {
 
   //Создание объявления и Добавление фото
 
-  const [images, setImages] = useState({});
   const handleAdPhoto = (event) => {
     event.preventDefault();
     const selectedFile = event.target.files[0];
@@ -69,17 +94,29 @@ function NewAdv({ modal, handleModal, currentAd }) {
   // console.log("images", images);
 
   useEffect(() => {
-    if (currentAd) {
+    console.log("checking imgs");
+    console.log("imgs", images);
+
+    if (currentAd?.id) {
       const imgObject = {};
       currentAd.images.forEach((img, index) => {
         const key = `fileupload${index + 1}`;
         imgObject[key] = img.url;
       });
+      console.log("imgObject", imgObject);
+
       setImages(imgObject);
-    }
+    } else setImages({});
   }, [currentAd?.id]);
 
   const makeNewAd = async () => {
+    if (!validatePrice(newAdData.price)) {
+      setnewAdData((prev) => ({
+        ...prev,
+        error: "Здесь должны быть только цифры",
+      }));
+      return;
+    }
     setRequestProcess({ loading: true, error: false });
     try {
       const adv = await newAd({
@@ -111,26 +148,61 @@ function NewAdv({ modal, handleModal, currentAd }) {
   const dispatch = useDispatch();
   const setAds = (value) => dispatch(setAdsList(value || []));
 
-  const changeAd = () => {
-    patchAd(
-      {
-        title: newAdData.title,
-        description: newAdData.description,
-        price: newAdData.price,
-      },
-      currentAd.id
-    )
-      .then(() => {
-        setRequestProcess({ loading: false, error: false });
-        getAds().then((data) => {
-          setAds(data);
-        });
-        dispatch(setShouldUpdate(true));
-        handleModal();
-      })
-      .catch((error) => {
-        setRequestProcess({ loading: false, error: error.message });
+  const changeAd = async () => {
+    if (!validatePrice(newAdData.price)) {
+      setnewAdData((prev) => ({
+        ...prev,
+        error: "Здесь должны быть только цифры",
+      }));
+      return;
+    }
+
+    try {
+      await patchAd(
+        {
+          title: newAdData.title,
+          description: newAdData.description,
+          price: newAdData.price,
+          error: false,
+        },
+        currentAd.id
+      );
+      const addArray = [];
+      const delArray = [];
+
+      Object.values(images).forEach((el) => {
+        if (!currentAd?.images?.find((item) => item.url === el))
+          addArray.push(el);
       });
+      const requests = [];
+      currentAd?.images?.forEach((el) => {
+        if (!Object.values(images).find((item) => item === el.url))
+          delArray.push(el.url);
+      });
+
+      console.log("addArray", addArray)
+      console.log("delArray", delArray)
+
+      addArray.forEach((el) => {
+        const formData = new FormData();
+        formData.append("file", el);
+        requests.push(() => postNewAdPhoto(formData, currentAd.id));
+      });
+      delArray.forEach((el) => {
+        requests.push(() => delPhoto(currentAd.id, { file_url: el }));
+      });
+
+      await Promise.all(requests.map(request=> request()));
+
+      setRequestProcess({ loading: false, error: false });
+      await getAds().then((data) => {
+        setAds(data);
+      });
+      dispatch(setShouldUpdate(true));
+      handleModal();
+    } catch (error) {
+      setRequestProcess({ loading: false, error: error.message });
+    }
   };
 
   return (
@@ -237,6 +309,9 @@ function NewAdv({ modal, handleModal, currentAd }) {
                 onInput={handlePrice}
               ></S.Form__newArt_input_price>
               <S.Form__newArt_input_price_cover></S.Form__newArt_input_price_cover>
+              <p style={{ color: "red" }}>
+                {newAdData.error ? newAdData.error : ""}
+              </p>
             </S.Form__newArt_block>
             <S.Form__newArt__btn_pub
               onClick={currentAd ? changeAd : makeNewAd}
