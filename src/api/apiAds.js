@@ -1,10 +1,8 @@
 import { isExpired } from "../utils/utils";
 
 export async function newToken() {
-  // console.log("start newToken", sessionStorage.getItem("updatingToken"));
   if (sessionStorage.getItem("updatingToken") === "true") return;
   const refreshToken = localStorage.getItem("refresh_token");
-  // console.log("not true newToken");
 
   const accessToken = localStorage.getItem("access_token");
   sessionStorage.setItem("updatingToken", "true");
@@ -64,7 +62,6 @@ export async function getAdComments(params, ad_id) {
 export async function newComment(params, ad_id) {
   let accessToken = localStorage.getItem("access_token");
   if (isExpired(accessToken)) {
-    console.log("ISTEK")
     await newToken();
     accessToken = localStorage.getItem("access_token");
   }

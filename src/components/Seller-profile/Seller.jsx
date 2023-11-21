@@ -58,7 +58,7 @@ function Seller() {
                       <S.Link>
                         <S.Photo
                           src={
-                            user?.avatar === null
+                            !user?.avatar
                               ? img
                               : `http://127.0.0.1:8090/${user?.avatar}`
                           }

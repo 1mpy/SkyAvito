@@ -29,7 +29,12 @@ function NewAdv({ modal, handleModal, currentAd }) {
 
   //Блокирование кнопки
   const buttonDisabled = useMemo(() => {
-    console.log("active");
+    if (
+      newAdData.title === "" ||
+      newAdData.description === "" ||
+      newAdData.price === ""
+    )
+      return true;
 
     if (currentAd) {
       if (
@@ -38,22 +43,26 @@ function NewAdv({ modal, handleModal, currentAd }) {
         newAdData.price !== currentAd.price
       )
         return false;
+
       if (
         currentAd?.images?.length !==
-        Object.values(images).filter((el) => el !== "")
+        Object.values(images).filter((el) => el !== "").length
       )
         return false;
-      currentAd?.images?.forEach((el) => {
+
+      for (const el of currentAd.images) {
         if (!Object.values(images).find((item) => item === el.url))
           return false;
-      });
+      }
+    } else {
+      if (
+        newAdData.title !== "" &&
+        newAdData.description !== "" &&
+        newAdData.price !== ""
+      )
+        return false;
     }
-    if (
-      newAdData.title !== "" &&
-      newAdData.description !== "" &&
-      newAdData.price !== ""
-    )
-      return false;
+
     return true;
   }, [
     newAdData.title,
@@ -68,14 +77,13 @@ function NewAdv({ modal, handleModal, currentAd }) {
   const handleDescription = (e) =>
     setnewAdData((prev) => ({ ...prev, description: e.target.value }));
   const handlePrice = (e) =>
-    setnewAdData((prev) => ({ ...prev, price: e.target.value }));
+    setnewAdData((prev) => ({ ...prev, price: Number(e.target.value) }));
 
   //Создание объявления и Добавление фото
 
   const handleAdPhoto = (event) => {
     event.preventDefault();
     const selectedFile = event.target.files[0];
-    console.log("selectedFile", selectedFile);
 
     if (!selectedFile) {
     } else {
@@ -91,19 +99,14 @@ function NewAdv({ modal, handleModal, currentAd }) {
     }
     return " ";
   };
-  // console.log("images", images);
 
   useEffect(() => {
-    console.log("checking imgs");
-    console.log("imgs", images);
-
     if (currentAd?.id) {
       const imgObject = {};
       currentAd.images.forEach((img, index) => {
         const key = `fileupload${index + 1}`;
         imgObject[key] = img.url;
       });
-      console.log("imgObject", imgObject);
 
       setImages(imgObject);
     } else setImages({});
@@ -180,9 +183,6 @@ function NewAdv({ modal, handleModal, currentAd }) {
           delArray.push(el.url);
       });
 
-      console.log("addArray", addArray)
-      console.log("delArray", delArray)
-
       addArray.forEach((el) => {
         const formData = new FormData();
         formData.append("file", el);
@@ -192,7 +192,7 @@ function NewAdv({ modal, handleModal, currentAd }) {
         requests.push(() => delPhoto(currentAd.id, { file_url: el }));
       });
 
-      await Promise.all(requests.map(request=> request()));
+      await Promise.all(requests.map((request) => request()));
 
       setRequestProcess({ loading: false, error: false });
       await getAds().then((data) => {
@@ -307,6 +307,7 @@ function NewAdv({ modal, handleModal, currentAd }) {
                 placeholder="₽"
                 value={newAdData.price}
                 onInput={handlePrice}
+                type="number"
               ></S.Form__newArt_input_price>
               <S.Form__newArt_input_price_cover></S.Form__newArt_input_price_cover>
               <p style={{ color: "red" }}>

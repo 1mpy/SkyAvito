@@ -60,8 +60,6 @@ function Adv() {
 
     if (currentAd) updateComments();
   }, [currentAd?.id]);
-  console.log("ads", ads);
-  console.log("currentAd", currentAd);
 
   //МОДАЛКА
   const [modal, setModal] = useState(false);
@@ -183,7 +181,11 @@ function Adv() {
                   <S.Article__author>
                     <S.Author__img>
                       <S.Photo
-                        src={`http://127.0.0.1:8090/${currentAd?.user?.avatar}`}
+                        src={
+                          currentAd?.user?.avatar
+                            ? `http://127.0.0.1:8090/${currentAd?.user?.avatar}`
+                            : img
+                        }
                       ></S.Photo>
                     </S.Author__img>
                     <S.Author__cont>
@@ -221,11 +223,13 @@ function Adv() {
           handleModal={handleModal}
           updateComments={updateComments}
         />
-{changeAdModal &&        <NewAdv
-          handleModal={openModal}
-          modal={changeAdModal}
-          currentAd={currentAd}
-        />}
+        {changeAdModal && (
+          <NewAdv
+            handleModal={openModal}
+            modal={changeAdModal}
+            currentAd={currentAd}
+          />
+        )}
         <></>
       </S.Main>
     </>

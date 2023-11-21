@@ -11,7 +11,6 @@ import { selectorUser } from "../../store/selectors/userSelector";
 export function Wrapper({ children }) {
   const user = useSelector(selectorUser);
   const dispatch = useDispatch();
-  console.log("user", user);
   const [modal, setModal] = useState(false);
   const handleModal = () => setModal((prev) => !prev);
 

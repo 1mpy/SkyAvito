@@ -49,6 +49,7 @@ function Reg() {
     }
 
     if (
+
       !validateReg(regdata.name) ||
       !validateReg(regdata.surname) ||
       !validateReg(regdata.city)
@@ -59,23 +60,29 @@ function Reg() {
       }));
       return;
     }
+    try {
+      const data = await regUser({
+        password: regdata.password,
+        email: regdata.email,
+        name: regdata.name,
+        surname: regdata.surname,
+        phone: "",
+        city: regdata.city,
+      });
 
-    const data = await regUser({
-      password: regdata.password,
-      email: regdata.email,
-      name: regdata.name,
-      surname: regdata.surname,
-      phone: "",
-      city: regdata.city,
-    });
-
-    await login({
-      email: regdata.email,
-      password: regdata.password,
-    });
-    setCurrentUser(data);
-    localStorage.setItem("user", JSON.stringify(data));
-    navigate(`/`);
+      await login({
+        email: regdata.email,
+        password: regdata.password,
+      });
+      setCurrentUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate(`/`);
+    } catch (error) {
+      setRegdata((prev) => ({
+        ...prev,
+        error: error.message,
+      }));
+    }
   };
   return (
     <S.Wrapper>
